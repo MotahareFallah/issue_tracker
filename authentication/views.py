@@ -170,3 +170,36 @@ class OtpRequestViewSet(ModelViewSet):
             return Response(
                 {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+    @action(
+        detail=False,
+        methods=["post"],
+        url_path="reset-password",
+        permission_classes=[IsAuthenticated],
+    )
+    def reset_password(self, request):
+        new_password = request.data.get("new_password")
+        otp_entered = request.data.get("otp")
+
+        if not new_password or not otp_entered:
+            return Response(
+                "Missing required fields", status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = request.user
+            otp_code = OtpCode.objects.get(user=user)
+
+            if otp_code.is_valid() and otp_code.code == otp_entered:
+                user.set_password(new_password)
+                user.save()
+                otp_code.delete()
+                return Response(
+                    "Password reset successfully", status=status.HTTP_200_OK
+                )
+            else:
+                return Response("Invalid OTP", status=status.HTTP_400_BAD_REQUEST)
+        except OtpCode.DoesNotExist:
+            return Response(
+                "OTP code not found for the user", status=status.HTTP_404_NOT_FOUND
+            )
