@@ -144,3 +144,29 @@ class OtpRequestViewSet(ModelViewSet):
                 {"error": f"An unexpected error occurred: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+    @action(
+        detail=False,
+        methods=["patch"],
+        url_path="setup-account",
+        permission_classes=[IsAuthenticated],
+    )
+    def setup_account(self, request):
+        password = request.data.get("password")
+        if not password:
+            return Response(
+                "Missing required fields", status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            user = request.user
+
+            user.set_password(password)
+            user.active_member = True
+            user.save()
+            return Response("Account setup successfully", status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
