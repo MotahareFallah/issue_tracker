@@ -11,7 +11,6 @@ from django.utils import timezone
 from .managers import UserManager
 
 
-
 class Section(models.Model):
     name = models.CharField(max_length=50)
 
