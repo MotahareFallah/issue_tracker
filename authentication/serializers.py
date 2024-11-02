@@ -11,7 +11,7 @@ class SectionSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(BaseUserSerializer):
-    department = SectionSerializer(required=False)
+    section = SectionSerializer(required=False)
 
     class Meta(BaseUserSerializer.Meta):
         model = User
