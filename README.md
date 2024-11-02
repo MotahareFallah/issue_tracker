@@ -23,8 +23,9 @@ A simple issue-tracking application built with Python and Django. This project a
 
 - **Python**: The programming language used for backend development.
 - **Django**: A lightweight web framework for building web applications.
-- **SQLite**: A lightweight database for storing user and issue data.
+- **Postgres**: A lightweight database for storing user and issue data.
 - **HTML/CSS/JavaScript**: For frontend development.
+- **Docker**: for running the project easily in the cloud.
 
 ## Installation
 
