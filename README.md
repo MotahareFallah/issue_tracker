@@ -60,7 +60,7 @@ To set up the project locally, follow these steps:
 
 ## Usage
 
-1. Open your web browser and navigate to http://127.0.0.1:5000.
+1. Open your web browser and navigate to http://127.0.0.1:8000.
 2. Register a new account or log in with an existing account.
 3. Start creating and managing your issues!
 
