@@ -39,9 +39,9 @@ class User(AbstractUser):
     def clean(self):
         super().clean()
         if self.is_staff and self.section is None:
-            raise ValidationError("Department is required for staff members.")
+            raise ValidationError("Section is required for staff members.")
         if not self.is_staff:
-            self.department = None
+            self.section = None
 
     class Meta:
         verbose_name = "user"

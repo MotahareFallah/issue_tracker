@@ -203,3 +203,70 @@ class OtpRequestViewSet(ModelViewSet):
             return Response(
                 "OTP code not found for the user", status=status.HTTP_404_NOT_FOUND
             )
+
+
+class OneTimeLinkViewSet(ModelViewSet):
+
+    queryset = OneTimeLink.objects.all()
+    serializer_class = OneTimeLinkSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        phone = request.data.get("phone")
+        try:
+            user = User.objects.get(phone=phone)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User with this phone number does not exist."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        existing_link = OneTimeLink.objects.filter(user=user).exists()
+        if existing_link:
+            return Response(
+                {"error": "You have already generated a one-time link."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        one_time_link = OneTimeLink.objects.create(user=user)
+        base_url = settings.BASE_URL
+        relative_url = "/one-time-link/use-link/{uuid}/".format(uuid=one_time_link.uuid)
+
+        link = f"{base_url}{relative_url}"
+
+        return Response({"link": link}, status=status.HTTP_201_CREATED)
+
+    @action(
+        detail=False,
+        methods=["get"],
+        url_path="use-link/(?P<uuid>[^/.]+)",
+        permission_classes=[AllowAny],
+    )
+    def use_link(
+        self,
+        request,
+        uuid=None,
+    ):
+        try:
+            one_time_link = OneTimeLink.objects.get(uuid=uuid)
+            user = one_time_link.user
+
+            if one_time_link.is_expired():
+                one_time_link.delete()
+                return Response(
+                    {"detail": "This link has expired."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+            refresh = RefreshToken.for_user(user)
+
+            tokens = {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+            }
+            one_time_link.delete()
+
+            return Response({"tokens": tokens})
+
+        except OneTimeLink.DoesNotExist:
+            return Response(
+                {"detail": "Invalid link."}, status=status.HTTP_400_BAD_REQUEST
+            )

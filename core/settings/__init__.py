@@ -155,3 +155,4 @@ DJOSER = {
         "current_user": "core.serializers.UserSerializer",
     },
 }
+BASE_URL = os.getenv("BASE_URL")

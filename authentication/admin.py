@@ -13,7 +13,7 @@ class UserAdmin(BaseUserAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "phone",
-                    "department",
+                    "section",
                     "first_name",
                     "last_name",
                     "staff_member",
@@ -30,7 +30,7 @@ class UserAdmin(BaseUserAdmin):
             "Personal info",
             {
                 "fields": (
-                    "department",
+                    "section",
                     "first_name",
                     "last_name",
                     "staff_member",
