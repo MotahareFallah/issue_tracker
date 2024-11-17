@@ -32,26 +32,39 @@ A simple issue-tracking application built with Python and Django. This project a
 To set up the project locally, follow these steps:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/MotahareFallah/issue_tracker.git
    cd issue_tracker
    ```
-   
+
 2. **Create a virtual environment** (optional but recommended):
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
 3. **Install dependencies**:
+
   ```bash
   pip install -r requirements.txt
   ```
 
-4. **Set up the database**:
-  - Initialize the database by running the application for the first time or using a provided script (if available).
+  Open the newly created .env file in your preferred text editor and update the values as needed. Make sure to configure any required variables specific to your local setup.
 
-5. **Run the application**:
+4. **Add Env file**:
+
+```bash
+cp .env.example .env
+```
+
+5. **Set up the database**:
+
+  Initialize the database by running the application for the first time or using a provided script (if available).
+
+6. **Run the application**:
+
    ```bash
    python manage.py runserver
    ```
@@ -65,6 +78,7 @@ To set up the project locally, follow these steps:
 3. Start creating and managing your issues!
 
 ## Contributing
+
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
 1. Fork the repository.
@@ -76,6 +90,3 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 ## License
 
 This project is licensed under the MIT License. Feel free to customize this README further based on specific features or instructions relevant to your project!
-
-
-   
