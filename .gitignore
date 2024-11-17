@@ -177,3 +177,6 @@ cython_debug/
 # PyCharm #
 *.iws /out/
 .idea/
+
+# Do not save enviorment variable
+.env
